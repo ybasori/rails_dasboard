@@ -1,0 +1,39 @@
+<section class="content-header">
+    <h1>
+        Users
+        <small>List</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Users</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box">
+          <div class="box-body">
+              <%= link_to 'New User', new_user_path %>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th colspan="2"></th>
+                  </tr>
+                </thead>
+              
+                <tbody>
+                  <% @users.each do |user| %>
+                    <tr>
+                      <td><%= user.email %></td>
+                      <td><%= link_to 'Edit', edit_user_path(user) %></td>
+                      <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>

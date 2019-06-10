@@ -1,0 +1,45 @@
+<section class="content-header">
+    <h1>
+        Modules
+        <small>List</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Modules</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box">
+          <div class="box-body">
+
+
+            <%= link_to 'New Module', new_modulepage_path %>
+
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Url</th>
+                  <th colspan="2"></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% @modulepages.each do |modulepage| %>
+                  <tr>
+                    <td><%= modulepage.name %></td>
+                    <td><%= modulepage.url %></td>
+                    <td><%= link_to 'Edit', edit_modulepage_path(modulepage) %></td>
+                    <td><%= link_to 'Destroy', modulepage, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
