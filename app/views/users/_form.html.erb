@@ -1,13 +1,13 @@
 <%= form_with(model: user, local: true, html: {class: "form-horizontal"}) do |form| %>
 
-  <% if @errors.any? %>
+  <% if user.errors.any? %>
   <div class="row">
     <div class="col-md-9 col-md-offset-3">
       <div class="callout callout-danger">
-        <h4><i class="icon fa fa-warning"></i><%= pluralize(@errors.count, "error") %> prohibited this user from being saved:</h4>
+        <h4><i class="icon fa fa-warning"></i><%= pluralize(user.errors.count, "error") %> prohibited this role from being saved:</h4>
 
         <ul>
-          <% @errors.full_messages.each do |message| %>
+          <% user.errors.full_messages.each do |message| %>
             <li><%= message %></li>
           <% end %>
         </ul>
@@ -16,7 +16,7 @@
   </div>
   <% end %>
 
-  <% if !@errors.messages&.email %>
+
 
   <div class="form-group row">
     <%= form.label :email, :class=>"col-md-3 control-label" %>
@@ -25,44 +25,16 @@
     </div>
   </div>
 
-  <% else %>
-
-  <div class="form-group row">
-        <div class="field_with_errors">
-            <%= form.label :email, :class=>"col-md-3 control-label" %>
-        </div>
-        <div class="col-md-9">
-            <div class="field_with_errors">
-                <%= form.text_field :email, id: :user_email, :class=>"form-control" %>
-            </div>
-        </div>
-      </div>
   
-  <% end %>
-
-  <% if !@errors.messages&.password %>
 
   <div class="form-group row">
     <%= form.label :password, :class=>"col-md-3 control-label" %>
     <div class="col-md-9">
         <%= form.password_field :password, id: :user_password, :class=>"form-control" %>
     </div>
-    </div>
+  </div>
 
-    <% else %>
-
-    <div class="form-group row">
-            <div class="field_with_errors">
-                <%= form.label :password, :class=>"col-md-3 control-label" %>
-            </div>
-            <div class="col-md-9">
-                <div class="field_with_errors">
-                    <%= form.password_field :password, id: :user_password, :class=>"form-control" %>
-                </div>
-            </div>
-          </div>
-
-    <% end %>
+    
 
   <div class="form-group row">
     <div class="col-md-9 col-md-offset-3">

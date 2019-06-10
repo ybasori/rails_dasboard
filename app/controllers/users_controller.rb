@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_modulepage, only: [:show, :edit, :update, :destroy]
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
   
     layout "admin"
 
@@ -13,60 +13,56 @@ class UsersController < ApplicationController
         errors= Hash.new
         errors['any?']=false
         @errors = OpenStruct.new(errors)
-        data= Hash.new
-        data['email']=""
-        data['password']=""
-        @previous_data = OpenStruct.new(data)
     end
 
     def create
-        error_total=false
-        error_count=0
-        error_messages = Hash.new
-        error_full_messages= Array.new
-        data = Hash.new
 
-
-        params.require(:user).each do |key, value|
-            data[key]=value
-            if value == ""
-                message="can't be blank"
-                error_messages[key]=message
-                error_full_messages.push(key + " " + message)
-                error_total = true
-                error_count=error_count+1
-            end
-        end
-
-        error_messages = OpenStruct.new(error_messages)
-
-        errors = Hash.new
-        errors['any?']=error_total
-        errors['messages']=error_messages
-        errors['detail']=error_messages
-        errors['full_messages']=error_full_messages
-        errors['count']=error_count
-
-        errors=OpenStruct.new(errors)
-
-        @errors = errors
-        @user = User.new
-        @user.email = params.require(:user)['email']
-
-        
-
-        @previous_data=OpenStruct.new(data)
-
-        logger.debug @previous_data.email
+        @user = User.new(user_params)
+        @user.save
 
         respond_to do |format|
-            format.html { render :new }
-            format.json { render json: @errors, status: :unprocessable_entity }
+            if @user.save
+              
+              format.html { redirect_to users_url, notice: 'User was successfully created.' }
+              format.json { render :show, status: :created, location: @user }
+            else
+              format.html { render :new }
+              format.json { render json: @user.errors, status: :unprocessable_entity }
+            end
         end
+        
 
     end
 
+    def edit
+    end
+
     def update
+
+        data = Hash.new
+        data['email'] = params.require(:user)['email']
+        if params.require(:user)['password']!=""
+            data['password'] = params.require(:user)['password']
+        end
+
+        respond_to do |format|
+          if @user.update(data)
+    
+            format.html { redirect_to users_url, notice: 'User was successfully updated.' }
+            format.json { render :show, status: :ok, location: @user }
+          else
+            format.html { render :edit }
+            format.json { render json: @user.errors, status: :unprocessable_entity }
+          end
+        end
+    end
+
+    def destroy
+        @user.destroy
+        respond_to do |format|
+          format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+          format.json { head :no_content }
+        end
     end
 
     private
@@ -75,6 +71,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:email, :encrypted_password)
+      params.require(:user).permit(:email, :password)
     end
 end

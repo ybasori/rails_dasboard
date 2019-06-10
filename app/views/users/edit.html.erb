@@ -1,0 +1,29 @@
+<section class="content-header">
+    <h1>
+        User
+        <small>Edit</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class=""><%= link_to "User", users_path %></li>
+        <li class="active">Editing User</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                        <%= render 'form', user: @user %>
+
+                        <%= link_to 'Back', users_path %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
