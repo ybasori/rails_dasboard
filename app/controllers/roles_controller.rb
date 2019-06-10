@@ -18,10 +18,12 @@ class RolesController < ApplicationController
   # GET /roles/new
   def new
     @role = Role.new
+    @modulepages = Modulepage.all
   end
 
   # GET /roles/1/edit
   def edit
+    @modulepages = Modulepage.all
   end
 
   # POST /roles

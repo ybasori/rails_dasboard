@@ -34,6 +34,13 @@
     </div>
   </div>
 
+  <div class="form-group row">
+    <%= form.label :role_id, :class=>"col-md-3 control-label" %>
+    <div class="col-md-9">
+      <%= collection_select( :roles_users, :role_id, @roles, :id, :name, {:selected=>user.role_ids}, { :class=> "form-control", :multiple => true } ) %>
+    </div>
+  </div>
+
     
 
   <div class="form-group row">

@@ -10,9 +10,7 @@ class UsersController < ApplicationController
 
     def new
         @user = User.new
-        errors= Hash.new
-        errors['any?']=false
-        @errors = OpenStruct.new(errors)
+        @roles = Role.all
     end
 
     def create
@@ -22,6 +20,13 @@ class UsersController < ApplicationController
 
         respond_to do |format|
             if @user.save
+
+                params[:roles_users][:role_id].each do |x|
+                    if x!=""
+                        @role = Role.find(x)
+                        @role.users << @user
+                    end
+                end
               
               format.html { redirect_to users_url, notice: 'User was successfully created.' }
               format.json { render :show, status: :created, location: @user }
@@ -35,6 +40,7 @@ class UsersController < ApplicationController
     end
 
     def edit
+        @roles = Role.all
     end
 
     def update
@@ -47,6 +53,15 @@ class UsersController < ApplicationController
 
         respond_to do |format|
           if @user.update(data)
+
+            @user.roles.delete(@user.roles)
+
+            params[:roles_users][:role_id].each do |x|
+                if x!=""
+                    @role = Role.find(x)
+                    @role.users << @user
+                end
+            end
     
             format.html { redirect_to users_url, notice: 'User was successfully updated.' }
             format.json { render :show, status: :ok, location: @user }

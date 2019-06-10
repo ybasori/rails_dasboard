@@ -32,7 +32,7 @@
   <div class="form-group row">
     <%= form.label :module_id, :class=>"col-md-3 control-label" %>
     <div class="col-md-9">
-      <%= collection_select( :modulepages_roles, :modulepage_id, Modulepage.all, :id, :name, {:selected=>role.modulepage_ids}, { :class=> "form-control", :multiple => true } ) %>
+      <%= collection_select( :modulepages_roles, :modulepage_id, @modulepages, :id, :name, {:selected=>role.modulepage_ids}, { :class=> "form-control", :multiple => true } ) %>
     </div>
   </div>
 
