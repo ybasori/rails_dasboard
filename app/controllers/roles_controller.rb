@@ -2,7 +2,7 @@ class RolesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_role, only: [:show, :edit, :update, :destroy]
 
-  layout "admin"
+  layout "dashboard"
 
   # GET /roles
   # GET /roles.json
@@ -38,9 +38,14 @@ class RolesController < ApplicationController
 
         params[:modulepages_roles][:modulepage_id].each do |x|
           if x!=""
-            @modulepage = Modulepage.find(x)
-            @modulepage.roles << @role
+            modulepage = Modulepage.find(x)
+            modulepage.roles << @role
           end
+        end
+
+        if @role.alias == "superadmin"
+          modulepages = Modulepage.all
+          @role.modulepages << modulepages
         end
         
         format.html { redirect_to roles_url, notice: 'Role was successfully created.' }

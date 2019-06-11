@@ -2,7 +2,7 @@ class ModulepagesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_modulepage, only: [:show, :edit, :update, :destroy]
 
-  layout "admin"
+  layout "dashboard"
 
   # GET /modulepages
   # GET /modulepages.json
@@ -31,6 +31,12 @@ class ModulepagesController < ApplicationController
 
     respond_to do |format|
       if @modulepage.save
+        role = Role.where(alias: "superadmin").take
+
+        if role
+          @modulepage.roles << role
+        end
+        
         format.html { redirect_to modulepages_url, notice: 'Module was successfully created.' }
         format.json { render :show, status: :created, location: @modulepage }
       else
@@ -57,6 +63,7 @@ class ModulepagesController < ApplicationController
   # DELETE /modulepages/1
   # DELETE /modulepages/1.json
   def destroy
+    @modulepage.roles.delete(@modulepage.roles)
     @modulepage.destroy
     respond_to do |format|
       format.html { redirect_to modulepages_url, notice: 'Module was successfully destroyed.' }

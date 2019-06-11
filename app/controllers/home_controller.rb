@@ -1,9 +1,10 @@
 class HomeController < ApplicationController
 
-    before_action :authenticate_user!
-
-    layout "admin"
+    layout "application"
     
     def index
+        if current_user
+            redirect_to dashboard_url
+        end
     end
 end
