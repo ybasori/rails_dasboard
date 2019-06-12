@@ -1,0 +1,60 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="modalChooseRole">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Choose Role</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <% current_user.roles.each do |role| %>
+            <div class="col-md-3">
+              <div class="panel panel-default chooseRole" style="cursor:pointer" data-alias="<%= role.alias %>">
+                <div class="panel-body">
+                    <%= role.name %>
+                </div>
+              </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  <% if !session[:role] %>
+  <script>
+    (function(){
+      $('#modalChooseRole').modal({
+        backdrop: 'static',
+        keyboard: false
+      });
+    })();
+  </script>
+  <% end %>
+  <script>
+    (function(){
+      $(".chooseRole").on("click", function(){
+        var role_alias = $(this).data('alias');
+        $.ajax({
+          url: "<%= choose_role_path %>",
+          type: "POST",
+          data: (function(){
+            var fd=new FormData();
+            fd.append("role",role_alias);
+            return fd;
+          })(),
+          contentType: false,
+          cache: false,
+          processData: false,
+          beforeSend: function(xhr){
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+          },
+          success: function(data){
+            window.location.reload();
+          },
+          error: function(){
+
+          }
+        });
+      });
+    })();
+  </script>

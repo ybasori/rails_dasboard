@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
+    include DashboardHelper
+    
     before_action :authenticate_user!
+    before_action :permit
     before_action :set_user, only: [:show, :edit, :update, :destroy]
   
     layout "dashboard"
@@ -87,5 +90,19 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:email, :password)
+    end
+
+    def permit
+      if !session[:role]
+        redirect_to dashboard_url
+      else
+        if DashboardHelper.access_module(session[:role], "role")
+          return true
+        else
+          respond_to do |format|
+            format.html { redirect_to dashboard_url, notice: 'Permission denied.' }
+          end
+        end
+      end
     end
 end

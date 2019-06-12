@@ -1,5 +1,7 @@
 class RolesController < ApplicationController
+  include DashboardHelper
   before_action :authenticate_user!
+  before_action :permit
   before_action :set_role, only: [:show, :edit, :update, :destroy]
 
   layout "dashboard"
@@ -102,5 +104,19 @@ class RolesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def role_params
       params.require(:role).permit(:name, :alias)
+    end
+
+    def permit
+      if !session[:role]
+        redirect_to dashboard_url
+      else
+        if DashboardHelper.access_module(session[:role], "role")
+          return true
+        else
+          respond_to do |format|
+            format.html { redirect_to dashboard_url, notice: 'Permission denied.' }
+          end
+        end
+      end
     end
 end

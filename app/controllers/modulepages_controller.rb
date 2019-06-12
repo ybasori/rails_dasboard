@@ -1,5 +1,7 @@
 class ModulepagesController < ApplicationController
+  include DashboardHelper
   before_action :authenticate_user!
+  before_action :permit
   before_action :set_modulepage, only: [:show, :edit, :update, :destroy]
 
   layout "dashboard"
@@ -80,5 +82,19 @@ class ModulepagesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def modulepage_params
       params.require(:modulepage).permit(:name, :url)
+    end
+    
+    def permit
+      if !session[:role]
+        redirect_to dashboard_url
+      else
+        if DashboardHelper.access_module(session[:role], "module")
+          return true
+        else
+          respond_to do |format|
+            format.html { redirect_to dashboard_url, notice: 'Permission denied.' }
+          end
+        end
+      end
     end
 end
