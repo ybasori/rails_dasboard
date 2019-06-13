@@ -6,9 +6,22 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <%= render "shared/head" %>
   </head>
 
-  <body>
+  <body class="hold-transition login-page">
     <%= yield %>
+
+    <%= render "shared/scripts" %>
+    <script>
+        $(function () {
+          $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' /* optional */
+          });
+        });
+    </script>
   </body>
 </html>

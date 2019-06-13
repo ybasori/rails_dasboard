@@ -1,26 +1,54 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<div class="login-box">
+    <div class="login-logo">
+      <%= link_to root_path do %>
+      <b>Admin</b>LTE
+      <% end %>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+      <p class="login-box-msg">Sign in to start your session</p>
+  
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-group has-feedback">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email",  class: "form-control" %>
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+          <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "form-control" %>
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+        <div class="row">
+          <div class="col-xs-8">
+            <% if devise_mapping.rememberable? %>
+              <div class="checkbox icheck">
+                  <label>
+                    <%= f.check_box :remember_me %> Remember Me
+                  </label>
+              </div>
+            <% end %>
+          </div>
+          <!-- /.col -->
+          <div class="col-xs-4">
+            <%= f.submit "Log in", :class => "btn btn-primary btn-block btn-flat" %>
+          </div>
+          <!-- /.col -->
+        </div>
+      <% end %>
+  
+      <div class="social-auth-links text-center">
+        <p>- OR -</p>
+        <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
+          Facebook</a>
+        <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
+          Google+</a>
+      </div>
+      <!-- /.social-auth-links -->
+  
+      <%= render "devise/shared/links" %>
+  
+    </div>
+    <!-- /.login-box-body -->
   </div>
-<% end %>
+  <!-- /.login-box -->
 
-<%= render "devise/shared/links" %>
+
